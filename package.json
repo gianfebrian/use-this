@@ -22,5 +22,13 @@
   },
   "dependencies": {
     "underscore": "^1.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gianfebrian/use-this"
+  },
+  "bugs": {
+    "url": "https://github.com/gianfebrian/use-this/issues"
+  },
+  "homepage": "https://github.com/gianfebrian/use-this"
 }
