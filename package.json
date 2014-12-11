@@ -1,0 +1,26 @@
+{
+  "name": "use-this",
+  "version": "0.0.1",
+  "description": "Parsing REST Request and return JSON based filter and sort",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "keywords": [
+    "parser",
+    "REST",
+    "JSON"
+  ],
+  "author": "Gian Febrian",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1",
+    "should": "^4.3.1",
+    "underscore": "^1.7.0",
+    "util": "^0.10.3"
+  },
+  "dependencies": {
+    "underscore": "^1.7.0"
+  }
+}
