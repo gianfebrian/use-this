@@ -1,7 +1,7 @@
 {
   "name": "use-this",
-  "version": "0.0.1",
-  "description": "Parsing REST Request and return JSON based filter and sort",
+  "version": "0.0.2",
+  "description": "Just some underscore implementations",
   "main": "index.js",
   "scripts": {
     "test": "mocha test"

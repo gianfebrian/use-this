@@ -1,4 +1,9 @@
 use-this
 ========
 
-Just some underscore implementations
+Just some underscore implementations.
+
+Possible use:
+--------------------
+
+

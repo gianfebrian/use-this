@@ -51,4 +51,70 @@ UseThis.prototype.pairThese = function (keyProperty, valueProperty) {
 	return _.object(keys, values);
 };
 
+UseThis.prototype.fillThisTemplate = function(template, pattern) {
+	var self = this, obj = self._wrapped;
+	var templateKeys = function(tmpl) {
+		var keys = _.keys(tmpl); result = [];
+		
+		_.each(keys, function(k, i) {
+			if (tmpl[k].indexOf('{') > -1) result.push(k);
+		});
+		
+		return result;
+	}
+
+	var applyPattern = function(key, tmpl, pattern, propertyValue, index) {
+		tmpl = tmpl.replace('{' + key + '}', 
+			pattern.value === 'propertyValue' ? propertyValue : index);
+		
+		return tmpl;
+	}
+
+	var applyRepeat = function(tmplKey, propertyKey, tmpl, pattern, propertyValue) {
+		var repeat = 0, result = [], appliedTemplate = {};
+		
+		if (_.isNumber(pattern.repeat))
+			repeat = pattern.repeat
+		else if (pattern.repeat === 'propertyValue') 
+			repeat = propertyValue
+		else if (pattern.repeat === 'propertyValueLength')
+			repeat = propertyValue.length
+		
+		for (var i = 0; i < repeat; i++) {
+			appliedTemplate = _.clone(tmpl);
+			appliedTemplate[tmplKey] = applyPattern(propertyKey, appliedTemplate[tmplKey], pattern, propertyValue, i);
+			result.push(appliedTemplate);
+		}
+		
+		return result;
+	}
+
+	var objectTemplate = function(tmpl, pattern) {
+		var propertyValue = '', keys = templateKeys(tmpl), 
+			appliedTemplate = {},	repeat = [], result = [];
+		
+		_.each(obj, function(o, oIndex) {
+			appliedTemplate = _.clone(tmpl);
+			_.each(keys, function(k, kIndex) {
+				_.each(appliedTemplate[k].match(/\{(.*?)\}/g), function(m, mIndex) {
+					m = m.replace(/[{}]/g, '');
+					propertyValue = self.checkIsNested(m) ? self.getThis(m, o) : o[m];
+					if (_.property('repeat')(pattern[m])) {
+						repeat = applyRepeat(k, m, appliedTemplate, pattern[m], propertyValue);
+					} else {
+						appliedTemplate[k] = applyPattern(m, appliedTemplate[k], pattern[m], propertyValue, oIndex)
+					}
+				});
+			});
+			if (_.isEmpty(repeat)) result.push(appliedTemplate);
+			else result.push(repeat);
+		});
+		result = _.flatten(result);
+		return result;
+	};
+	
+	if (_.isObject(template)) return objectTemplate(template, pattern);
+	return null;
+}
+
 module.exports = UseThis;

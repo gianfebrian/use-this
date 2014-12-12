@@ -77,4 +77,29 @@ describe("useThis(Object)", function() {
 			.should.eql({Gian: 'firstName', Febrian: 'lastName'});
 		});
 	});
+	//Object
+	describe(".fillThisTemplate(template, pattern)", function() {
+		var template = { possibleNickName: '{data.value}' };
+		var pattern1 = { 'data.value': {value: 'propertyValue'}};
+		var pattern2 = { 'data.value': {repeat: 3, value: 'propertyValue'}};
+		var pattern3 = { 'data.value': {repeat: 3, value: 'iteratee'}};
+		it("should return filled template object", function() {
+			useThis(requestedFilter).fillThisTemplate(template, pattern1)
+			.should.eql([{possibleNickName: 'Gian'}, {possibleNickName: 'Febrian'}]);
+		});
+		it("should return repeated filled template object", function() {
+			useThis(requestedFilter).fillThisTemplate(template, pattern2)
+			.should.eql([
+				{possibleNickName: 'Gian'}, {possibleNickName: 'Gian'}, {possibleNickName: 'Gian'}, 
+				{possibleNickName: 'Febrian'}, {possibleNickName: 'Febrian'}, {possibleNickName: 'Febrian'}
+			]);
+		});
+		it("should return repeated filled template object with index", function() {
+			useThis(requestedFilter).fillThisTemplate(template, pattern3)
+			.should.eql([
+				{possibleNickName: '0'}, {possibleNickName: '1'}, {possibleNickName: '2'}, 
+				{possibleNickName: '0'}, {possibleNickName: '1'}, {possibleNickName: '2'}
+			]);
+		});
+	});
 });
