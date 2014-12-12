@@ -16,7 +16,7 @@ var person = [
 To get nested property value 
 ````javascript
 useThis(person).getThis('name.first', 0); //Gian
-useThis(person).getThis('name.first', 0); //Suci
+useThis(person).getThis('name.first', 1); //Suci
 ````
 
 To pluck nested property value 
